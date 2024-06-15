@@ -39,4 +39,4 @@ jobs:
         pip install -r requirements.txt  # Ensure you have a requirements.txt if needed
 
     - name: Run Python script
-      run: python path/to/your_script.py  # Specify the path to your Python script
+      run: python code_pilot.py  # Specify the path to your Python script
