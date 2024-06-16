@@ -35,7 +35,7 @@ async def get_ai_suggestions(code_snippet):
     )
 
     prompt = [
-        {"role": "user", "content": "Point all the null checks on the below code \n\n" + code_snippet}
+        {"role": "user", "content": "Add comment as to what is there in the code/file \n\n" + code_snippet}
     ]
 
     raw_response = await generate_text(azure_openai_client, prompt)
@@ -88,9 +88,13 @@ async def runApp():
 
         # Comment on the first modified line in the file
         patch = file.patch.split('\n')
-        first_modified_line_number = next(
-            i for i, line in enumerate(patch, start=1) if line.startswith('+') and not line.startswith('+++'))
-        comment_on_pr_line(repo_name, pr_number, commit_id, file_path, first_modified_line_number, comment_body)
+        
+        try:
+            first_modified_line_number = next(
+                i for i, line in enumerate(patch, start=1) if line.startswith('+') and not line.startswith('+++'))
+            comment_on_pr_line(repo_name, pr_number, commit_id, file_path, first_modified_line_number, comment_body)
+        except StopIteration:
+            print(f"No modified lines found in file {file_path}.")
 
 import asyncio
 if __name__ == '__main__':
