@@ -40,3 +40,10 @@ jobs:
 
     - name: Run Python script
       run: python code_pilot.py # Specify the path to your Python script
+      env:
+          TOKEN: ${{ secrets.TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          REPO_NAME: ${{ github.repository }}
+          AZURE_API_KEY: ${{ secrets.AZURE_API_KEY }}
+          AZURE_ENDPOINT: ${{ secrets.AZURE_ENDPOINT }}
+
