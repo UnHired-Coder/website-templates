@@ -70,8 +70,21 @@ async def runApp():
     repo = g.get_repo(repo_name)
     pr = repo.get_pull(int(pr_number))
 
-    # Example: Get the latest commit on the PR
-    commit_id = pr.get_commits().reversed[0].sha
+    # Find the specific commit that modified the file
+    commit_id = None
+    commits = pr.get_commits()
+    for commit in commits:
+        commit_files = commit.files
+        for commit_file in commit_files:
+            if commit_file.filename == file_path:
+                commit_id = commit.sha
+                break
+        if commit_id:
+            break
+
+    if not commit_id:
+        print(f"Could not find commit that modified file {file_path}")
+        continue
 
     # Iterate over files changed in the PR
     files_changed = pr.get_files()
